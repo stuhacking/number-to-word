@@ -1,6 +1,6 @@
 (ns number-to-word.core)
 
-(def ^:const NUMBERS
+(def ^:const numbers
   "Table of primitive numerals as words."
   {1 "one"
    2 "two"
@@ -30,7 +30,7 @@
    80 "eighty"
    90 "ninety"})
 
-(def ^:const POWERS_OF_TEN
+(def ^:const powers-of-ten
   "List of powers of ten, including the first empty power."
   ["", "thousand", "million", "billion", "trillion", "quadrillion",
    "quintillion", "sextillion", "septillion", "octillion", "nonillion",
@@ -69,18 +69,18 @@ of size N."
 (defn group->word [[fst snd thd] level]
   (let [words (atom [])]
     (when (num? fst)
-      (swap! words conj (NUMBERS fst) "hundred")
+      (swap! words conj (numbers fst) "hundred")
       (when (or (num? snd) (num? thd))
         (swap! words conj "and")))
     (if (and (num? snd) (= 1 snd))
-      (swap! words conj (NUMBERS (+ thd (* 10 snd))))
+      (swap! words conj (numbers (+ thd (* 10 snd))))
       (do 
         (when (num? snd)
-          (swap! words conj (NUMBERS (* 10 snd))))
+          (swap! words conj (numbers (* 10 snd))))
         (when (num? thd)
-          (swap! words conj (NUMBERS thd)))))
+          (swap! words conj (numbers thd)))))
     (when (num? (count @words))
-      (swap! words conj (POWERS_OF_TEN level)))
+      (swap! words conj (powers-of-ten level)))
     (clojure.string/join " " (filter #(not (= "" %)) @words))))
 
 (defn number->word
