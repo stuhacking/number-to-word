@@ -45,6 +45,12 @@
              (rest (into [] 
                          (clojure.string/split (str s) #""))))))
 
+(defn pad-group
+  "Add leading 0s to a digit-group G until (count G) => N."
+  [g n]
+  (let [p (- n (count g))]
+    (concat (repeat p 0) g)))
+
 (defn group-digits 
   "Given a list of digits DIGITS, group them into subsequences
 of size N."
@@ -54,13 +60,7 @@ of size N."
             l ()]
        (if (empty? s)
          l
-         (recur (drop n s) (conj l (reverse (take n s))))))))
-
-(defn pad-group
-  "Add leading 0s to a digit-group G until (count G) => N."
-  [g n]
-  (let [p (- n (count g))]
-    (concat (take p (repeat 0)) g)))
+         (recur (drop n s) (conj l (pad-group (reverse (take n s)) n)))))))
 
 ;; Check if X is both non nil and > 0
 (defn num? [x]
@@ -96,8 +96,7 @@ of size N."
           "zero"
           (clojure.string/join ", " words))
         ;; Recur
-        (let [word (group->word 
-                    (pad-group (first num-groups) group-size) 
+        (let [word (group->word (first num-groups)
                     level)]
           (recur (rest num-groups)
                  (if (not (= "" word))
