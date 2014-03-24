@@ -8,6 +8,7 @@
 
 ## Emacs
 .lein-repl-history
+.lein-failures
 .nrepl-port
 
 ## Java
