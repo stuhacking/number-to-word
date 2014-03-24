@@ -22,8 +22,8 @@
   (is (= '((1)) (group-digits '(1) 1)))
   (is (= '((1) (2)) (group-digits '(1 2) 1)))
   (is (= '((1 2)) (group-digits '(1 2) 2)))
-  (is (= '((1) (2 3 4)) (group-digits '(1 2 3 4) 3)))
-  (is (= '((1) (2 3 4) (5 6 7)) (group-digits '(1 2 3 4 5 6 7) 3)))
+  (is (= '((0 0 1) (2 3 4)) (group-digits '(1 2 3 4) 3)))
+  (is (= '((0 0 1) (2 3 4) (5 6 7)) (group-digits '(1 2 3 4 5 6 7) 3)))
 
   ;; Default should be 1
   (is (= '((1) (2) (3)) (group-digits '(1 2 3)))))
