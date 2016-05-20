@@ -41,10 +41,10 @@
 
 (defn digits [s]
   "Read a string S into a list of digits."
-  (into [] 
+  (into []
         (map #(Integer/parseInt %)
-             (rest (into [] 
-                         (clojure.string/split (str s) #""))))))
+             (into []
+                   (clojure.string/split (str s) #"")))))
 
 (defn pad-group
   "Add leading 0s to a digit-group G until (count G) => N."
