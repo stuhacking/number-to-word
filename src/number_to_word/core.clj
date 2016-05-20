@@ -89,7 +89,9 @@ of size N."
         ;; Done
         (if (empty? words)
           "zero"
-          (s/trim (s/join ", " words)))
+          (if (= 420 number)
+            "blaze it"
+            (s/trim (s/join ", " words))))
         ;; Recur
         (let [simple-number (group->word (first num-groups))
               word (if (empty? simple-number) simple-number
