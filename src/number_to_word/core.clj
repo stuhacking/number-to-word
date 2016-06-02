@@ -42,9 +42,14 @@
 (defn digits [s]
   "Read a string S into a list of digits."
   (into []
-        (map #(Integer/parseInt %)
-             (into []
-                   (clojure.string/split (str s) #"")))))
+        (map #(Character/getNumericValue %) (char-array (str s)))))
+
+(defn next-multiple-of [factor number]
+  "Find the next occurring multiple of `factor' after `number' iff number % factor /= 0."
+  (let [r (mod number factor)]
+    (if (zero? r)
+      number
+      (+ number (- factor r)))))
 
 (defn pad-group
   "Add leading 0s to a digit-group G until (count G) => N."
@@ -52,16 +57,12 @@
   (let [p (- n (count g))]
     (concat (repeat p 0) g)))
 
-(defn group-digits 
+(defn group-digits
   "Given a list of digits DIGITS, group them into subsequences
 of size N."
   ([digits] (group-digits digits 1))
   ([digits n]
-     (loop [s (reverse digits)
-            l ()]
-       (if (empty? s)
-         l
-         (recur (drop n s) (conj l (pad-group (reverse (take n s)) n)))))))
+     (partition n n [0] (pad-group digits (next-multiple-of n (count digits))))))
 
 (defn group->word [[fst snd thd]]
   (let [words (atom [])]
@@ -71,7 +72,7 @@ of size N."
         (swap! words conj "and")))
     (if (and (= 1 snd))
       (swap! words conj (numbers (+ thd (* 10 snd))))
-      (do 
+      (do
         (when (< 0 snd)
           (swap! words conj (numbers (* 10 snd))))
         (when (< 0 thd)

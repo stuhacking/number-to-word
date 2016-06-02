@@ -7,6 +7,11 @@
   (is (= '(2 4 3 6 7 6) (digits "243676")))
   (is (= '(0 0 1) (digits "001"))))
 
+(deftest should-find-next-multiple-of []
+  (is (= 6 (next-multiple-of 3 4)))
+  (is (= 6 (next-multiple-of 6 6)))
+  (is (= 14 (next-multiple-of 7 8))))
+
 (deftest should-pad-a-group-of-digits []
   ;; Simple cases
   (is (= '(1) (pad-group '(1) 1)))
@@ -44,9 +49,8 @@
   (is (= "one million, one hundred thousand, one" (number->word 1100001)))
   (is (= "one million, two hundred and thirty four thousand, five hundred and sixty seven"
          (number->word 1234567)))
-  
+
   ;; With spurious leading zeros
   (is (= "one" (number->word 0001)))
   (is (= "one" (number->word "00000001")))
   (is (= "eleven" (number->word "000011"))))
-
