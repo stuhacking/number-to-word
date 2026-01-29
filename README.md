@@ -1,13 +1,14 @@
-# number-to-word
+Number 2 Word
+=============
 
-A Clojure library that converts numbers given in arabic
-numerals into readable English text.
+A Clojure library that converts numbers given in arabic numerals into readable
+English text.
 
 ## Usage
 
 Interactive REPL or run from command line:
 
-example usage:
+Example usage:
 
     $ java -jar num-to-word.jar 10 20 400 10842
     ten
@@ -17,7 +18,6 @@ example usage:
 
 ## License
 
-Copyright © 2014 Stuart Hacking
+Copyright © Stu Hacking <stuhacking@gmail.com>
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the MIT License, (see LICENSE).

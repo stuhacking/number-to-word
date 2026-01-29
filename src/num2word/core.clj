@@ -1,4 +1,4 @@
-(ns number-to-word.core
+(ns num2word.core
   (:require [clojure.string :as s]))
 
 (def ^:const numbers
@@ -59,10 +59,10 @@
 
 (defn group-digits
   "Given a list of digits DIGITS, group them into subsequences
-of size N."
+  of size N."
   ([digits] (group-digits digits 1))
   ([digits n]
-     (partition n n [0] (pad-group digits (next-multiple-of n (count digits))))))
+   (partition n n [0] (pad-group digits (next-multiple-of n (count digits))))))
 
 (defn group->word [[fst snd thd]]
   (let [words (atom [])]

@@ -1,0 +1,15 @@
+{:paths ["src"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.4"}}
+
+ :aliases
+ {;; Tools Build
+  :build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.12"}}
+          :ns-default build}
+
+  ;; Test Runner
+  :test {:extra-paths ["test"]
+         :extra-deps {io.github.cognitect-labs/test-runner
+                      {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+         :main-opts ["-m" "cognitect.test-runner"]
+         :exec-fn cognitect.test-runner.api/test}
+  }}
