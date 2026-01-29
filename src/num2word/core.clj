@@ -1,8 +1,8 @@
 (ns num2word.core
   (:require [clojure.string :as s]))
 
-(def ^:const numbers
-  "Table of primitive numerals as words."
+(def ^:const primitive-numbers
+  "Map of primitive numeric terms."
   {1 "one"
    2 "two"
    3 "three"
@@ -31,72 +31,84 @@
    80 "eighty"
    90 "ninety"})
 
-(def ^:const powers-of-ten
-  "List of powers of ten, including the first empty power."
+(def ^:const orders-of-magnitude
+  "List of orders of magnitude terms. The first entry is empty to avoid special
+  case handling for the lowest order."
   ["", "thousand", "million", "billion", "trillion", "quadrillion",
    "quintillion", "sextillion", "septillion", "octillion", "nonillion",
    "decillion", "undecillion", "duodecillion", "tredecillion",
    "quattuordecillion", "quindecillion", "sexdecillion", "octodecillion",
    "novemdecillion", "vigintillion"])
 
-(defn digits [s]
-  "Read a string S into a list of digits."
-  (into []
-        (map #(Character/getNumericValue %) (char-array (str s)))))
 
-(defn next-multiple-of [factor number]
-  "Find the next occurring multiple of `factor' after `number' iff number % factor /= 0."
+(defn digits
+  "Convert a numeric string `s` into a vector of digits."
+  [s]
+  (vec (map #(Character/getNumericValue %) (char-array (str s)))))
+
+
+(defn next-multiple-of
+  "Find the next occurring multiple of `factor` after `number`, iff number %
+  factor =/= 0."
+  [factor number]
   (let [r (mod number factor)]
     (if (zero? r)
       number
       (+ number (- factor r)))))
 
+
 (defn pad-group
-  "Add leading 0s to a digit-group G until (count G) => N."
-  [g n]
-  (let [p (- n (count g))]
-    (concat (repeat p 0) g)))
+  "Add leading 0s to a digit-group `coll` until (count `coll`) = `n`."
+  [coll n]
+  (let [pad (- n (count coll))]
+    (concat (repeat pad 0) coll)))
+
 
 (defn group-digits
-  "Given a list of digits DIGITS, group them into subsequences
-  of size N."
+  "Given a list of `digits`, group them into subsequences of size `n`."
   ([digits] (group-digits digits 1))
   ([digits n]
-   (partition n n [0] (pad-group digits (next-multiple-of n (count digits))))))
+   (->> (count digits)
+        (next-multiple-of n)
+        (pad-group digits)
+        (partition n n [0]))))
 
-(defn group->word [[fst snd thd]]
+
+(defn group->word
+  "Convert a triplet of digits into a string of words."
+  [[first second third]]
   (let [words (atom [])]
-    (when (< 0 fst)
-      (swap! words conj (numbers fst) "hundred")
-      (when (or (< 0 snd) (< 0 thd))
+    (when (< 0 first)
+      (swap! words conj (primitive-numbers first) "hundred")
+      (when (or (< 0 second) (< 0 third))
         (swap! words conj "and")))
-    (if (and (= 1 snd))
-      (swap! words conj (numbers (+ thd (* 10 snd))))
+    (if (and (= 1 second))
+      (swap! words conj (primitive-numbers (+ third (* 10 second))))
       (do
-        (when (< 0 snd)
-          (swap! words conj (numbers (* 10 snd))))
-        (when (< 0 thd)
-          (swap! words conj (numbers thd)))))
+        (when (< 0 second)
+          (swap! words conj (primitive-numbers (* 10 second))))
+        (when (< 0 third)
+          (swap! words conj (primitive-numbers third)))))
     (s/join " " (filter (complement s/blank?) @words))))
+
 
 (defn number->word
   "Convert an arabic number into readable English text."
   [number]
-  (let [group-size 3]
-    (loop [num-groups (group-digits (digits number) group-size)
-           words []
-           level (dec (count num-groups))]
-      (if (empty? num-groups)
-        ;; Done
-        (if (empty? words)
-          "zero"
-          (s/trim (s/join ", " words)))
-        ;; Recur
-        (let [simple-number (group->word (first num-groups))
-              word (if (empty? simple-number) simple-number
-                       (s/join " " [simple-number (powers-of-ten level)]))]
-          (recur (rest num-groups)
-                 (if (not (= "" word))
-                   (conj words word)
-                   words)
-                 (dec level)))))))
+  (loop [triplets (group-digits (digits number) 3)
+         words []
+         order (dec (count triplets))]
+    (if (empty? triplets)
+      ;; Done
+      (if (empty? words)
+        "zero"
+        (s/trim (s/join ", " words)))
+      ;; Recur
+      (let [simple-number (group->word (first triplets))
+            word (if (empty? simple-number) simple-number
+                     (s/join " " [simple-number (orders-of-magnitude order)]))]
+        (recur (rest triplets)
+               (if (not (= "" word))
+                 (conj words word)
+                 words)
+               (dec order))))))
