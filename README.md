@@ -10,7 +10,7 @@ Interactive REPL or run from command line:
 
 Example usage:
 
-    $ java -jar num-to-word.jar 10 20 400 10842
+    $ java -jar num2word.jar 10 20 400 10842
     ten
     twenty
     four hundred
