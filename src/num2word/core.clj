@@ -48,9 +48,16 @@
 
 
 (defn digits
-  "Convert a numeric string `s` into a vector of digits."
-  [s]
-  (vec (map #(Character/getNumericValue %) (char-array (str s)))))
+  "Convert a integer number or numeric string `n` into a vector of digits.
+
+  If `n` is already a string, it must represent an integer value. It is
+  permitted to have either ',' or '.' as thousand separators and any such
+  occurrences will be removed prior to conversion."
+  [n]
+  (let [s (s/replace (str n) #"[,.]" "")]
+    (->> (char-array s)
+         (map #(Character/digit % 10))
+         vec)))
 
 
 (defn next-multiple-of
@@ -118,3 +125,11 @@
                  (conj words word)
                  words)
                (dec order))))))
+
+
+(defn expand-numbers
+  "Given a `sentence` string, expand any numbers encountered to words. A number
+  is any sequence of digits representing an integer: Thousand separators and
+  decimal points will interrupt the sequence."
+  [sentence]
+  (s/replace sentence #"[0-9][0-9]*" number->word))

@@ -5,7 +5,7 @@
 
 ;;; Code:
 (ns num2word.main
-  (:require [num2word.core :refer [number->word]])
+  (:require [num2word.core :refer [expand-numbers]])
   (:gen-class))
 
 
@@ -15,4 +15,4 @@
   text representation."
   [& args]
   (doseq [x args]
-    (println (number->word x))))
+    (println (expand-numbers x))))
