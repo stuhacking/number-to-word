@@ -1,3 +1,9 @@
+;;; Num 2 Word core functionality
+;;
+;; SPDX-FileCopyrightText: 2014 Stu Hacking <stuhacking@gmail.com>
+;; SPDX-License-Identifier: MIT
+
+;;; Code:
 (ns num2word.core
   (:require [clojure.string :as s]))
 

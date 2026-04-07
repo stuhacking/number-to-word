@@ -1,8 +1,13 @@
+;;; Num 2 Word Project
+;;
+;; SPDX-FileCopyrightText: 2026 Stu Hacking <stuhacking@gmail.com>
+;; SPDX-License-Identifier: MIT
+
 {:paths ["src"]
  :deps {org.clojure/clojure {:mvn/version "1.12.4"}}
 
  :aliases
- {;; Tools Build
+ { ;; Tools Build
   :build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.12"}}
           :ns-default build}
 

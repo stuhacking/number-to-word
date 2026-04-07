@@ -1,3 +1,9 @@
+;;; Num 2 Word Build
+;;
+;; SPDX-FileCopyrightText: 2026 Stu Hacking <stuhacking@gmail.com>
+;; SPDX-License-Identifier: MIT
+
+;;; Code:
 (ns build
   (:require [clojure.tools.build.api :as b]))
 

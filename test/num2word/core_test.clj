@@ -1,3 +1,9 @@
+;;; Num 2 Word tests
+;;
+;; SPDX-FileCopyrightText: 2014 Stu Hacking <stuhacking@gmail.com>
+;; SPDX-License-Identifier: MIT
+
+;;; Code:
 (ns num2word.core-test
   (:require [clojure.test :refer [deftest is testing]]
             [num2word.core :refer :all]))

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2014 Stu Hacking <stuhacking@gmail.com>
+SPDX-License-Identifier: CC0-1.0
+-->
+
 Number 2 Word
 =============
 
@@ -18,6 +23,6 @@ Example usage:
 
 ## License
 
-Copyright © Stu Hacking <stuhacking@gmail.com>
+Copyright © 2014 Stu Hacking <stuhacking@gmail.com>
 
-Distributed under the MIT License, (see LICENSE).
+Distributed under the MIT License. (See COPYING).
